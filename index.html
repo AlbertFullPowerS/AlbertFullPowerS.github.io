@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+
+    <title>Document</title>
+</head>
+
+    <div class="cont">
+        <div style="background-color: crimson; padding: 1rem;">
+            <div class="header d-flex">
+                <div>
+                    <div class="cGrande azulb"></div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="Cpequeno rojo"></div>
+                    <div class="Cpequeno amarillo"></div>
+                    <div class="Cpequeno verde"></div>
+                </div>
+            </div>
+
+            <div class=" margin">
+                <div id="poke-0" class="over" >
+
+                </div>
+       
+            </div>
+
+            <div class="foother">
+                <div class="d-flex">
+                    <div class="cGrande azul"></div>
+                    <div class="d-flex">
+                        <div class="ovalo verde"></div>
+                        <div class="ovalo amarillo"></div>
+                    </div>
+    
+                </div>
+
+                <div class="d-flex">
+                    <div class="buscar flex-grow-1"><p>Busca Pokemon</p></div>
+                    
+                    <button  class="cGrande rojo" id="buscar"></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divPok" style="display: none;"  >
+        
+            
+    </div>
+    <script>
+         var pokemones = [];
+ 
+ var  count = 0 ; 
+ async function buscar (){
+    
+fetch("https://pokeapi.co/api/v2/pokemon?offset=100&limit=100")
+.then(response => response.json())
+.then(data =>{
+  console.log(data)
+
+
+  var min = 0;
+      var max = 100;
+  
+          var rango = ((max - min) / 2) - 1;
+          var semrandom;
+          semirandom = Math.trunc(2 * Math.floor(Math.random() * rango) +1 +min);
+         
+          const element = data.results[semirandom];
+          console.log(element.url)
+          fetch(element.url).then(response => response.json())
+          .then(dat1 =>{
+              document.getElementById("poke-0").innerHTML= `
+              
+
+                 <div class="card" style="width: 18rem;">
+                 <img src="${dat1.sprites.front_default}" alt="" class="card-img-top margin" >
+                      <div class="card-body">
+                          <h5 class="card-title">${element.name}</h5>
+                          <p class="card-text">Caracteristicas</p>
+                          <h6 class="card-subtitle mb-2 text-body-secondary">Altura : ${dat1.height} mts</h6>
+                          <h6 class="card-subtitle mb-2 text-body-secondary"> Peso : ${dat1.weight} kg</h6>
+
+
+                      </div>
+                  </div>
+              `;
+               
+                    document.getElementById("divPok").innerHTML += `
+                    
+                  <div class="card" style="width: 20rem; border: 10px solid yellow; border-radius: 15px;">
+                      <h5 class="card-title text-center">${element.name}</h5>
+                      <img src="${dat1.sprites.front_default}" class="card-img-top" alt="...">
+                      <div class="card-body" style="background-color: rgb(202, 199, 199); border-radius: 8px;">
+                          <h5 class="card-title text-danger">Ability</h5> <p class="card-title text-center text-danger">Fuego</p>
+                          <h5 class="card-title ">Peso : ${dat1.weight} kg </h5> 
+                          <h5 class="card-title ">Altura : ${dat1.height} mts</h5>  
+                      </div>
+                  </div>
+            `;
+               
+            
+          });
+ 
+});
+}
+window.addEventListener("load", async ()=> {
+    await buscar();
+    
+  });
+
+
+  document.getElementById("buscar").addEventListener("click",async()=>{
+    buscar();
+    document.getElementById("divPok").style.display="flex";
+    document.getElementById("divPok").style.flexWrap="wrap";
+    });
+
+
+  const poke = document.querySelectorAll(".focus");
+  poke.forEach(element => {
+    element.addEventListener("click",()=>   {
+        element.style.display='none'
+    });
+  });
+
+    </script>
+</body>
+<script src="script.js"></script>
+
+<style>
+    body{
+        
+    }
+
+    .cont{
+        background-color: brown;
+        padding: 50px;
+        display: flex;
+    justify-content: center;  
+        width: 50%;
+    margin: 0 auto;  }
+
+    .cGrande{
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        border: solid  black;
+    }
+
+    .Cpequeno{
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        border: solid black;
+        margin: 3px;
+    }
+
+    .ovalo{
+        width: 5rem;
+        height: 1rem ;
+        border: 1px solid black;
+        border-radius: 30%;
+        margin-left: 1rem;
+    }
+    .margin{
+        margin:10px;
+    }
+    .azul{
+        background-color: lightskyblue;
+    }
+
+    .azulb{
+        background-color: aqua;
+    }
+
+    .amarillo{
+        background-color: yellow;
+    }
+
+    .verde{
+        background-color: greenyellow;
+    }
+
+    .rojo{
+        background-color: red;
+    }
+
+    .buscar{
+        background-color:darkgoldenrod;
+        color:white;
+        border-radius: 5px;
+        margin: 5px;
+      
+    }
+
+    p{
+     padding-top: 3px;   
+    }
+</style>
+
+</html>
